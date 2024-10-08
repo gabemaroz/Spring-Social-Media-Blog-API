@@ -18,14 +18,15 @@ public class MessageService {
 
     public Message createMessage(Message message) throws MessageException {
         Optional<Account> optionalAccount = accountRepository.findByAccountId(message.getPostedBy());
-        if (optionalAccount.isPresent() && message.getMessageText().length() > 0 && message.getMessageText().length() < 255) {
+        if (optionalAccount.isPresent() && !message.getMessageText().isBlank()
+                && message.getMessageText().length() < 255) {
             return messageRepository.save(message);
         } else {
             throw new MessageException("Message corrupt, incomplete, or unauthorized.");
         }
     }
 
-    public List <Message> getAllMessages() {
+    public List<Message> getAllMessages() {
         return messageRepository.findAll();
     }
 
@@ -40,6 +41,20 @@ public class MessageService {
         } else {
             messageRepository.deleteById(messageId);
             return 1;
+        }
+    }
+
+    public Integer changeMessageTextByMessageId(Integer messageId, Message newMessage) throws MessageException {
+        Message originalMessage = getMessageByMessageId(messageId);
+        if (originalMessage == null) {
+            throw new MessageException("Original message does not exist.");
+        }
+        try {
+            originalMessage.setMessageText(newMessage.getMessageText());
+            createMessage(originalMessage);
+            return 1;
+        } catch (MessageException e){
+            throw e;
         }
     }
 

@@ -78,8 +78,13 @@ public class SocialMediaController {
     }
 
     @PatchMapping("messages/{messageId}")
-    public ResponseEntity replaceMessageById(@PathVariable Integer messageId) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<Integer> replaceMessageTextByMessageId(@PathVariable Integer messageId, @RequestBody Message message) {
+        try {
+            Integer rowsChanged = messageService.changeMessageTextByMessageId(messageId, message);
+            return ResponseEntity.status(HttpStatus.OK).body(rowsChanged);
+        } catch (MessageException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("accounts/{accountId}")
