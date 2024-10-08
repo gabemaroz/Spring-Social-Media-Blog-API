@@ -34,4 +34,13 @@ public class MessageService {
         return optionalMessage.isPresent() ? optionalMessage.get() : null;
     }
 
+    public Integer removeMessageByMessageId(Integer messageId) {
+        if (getMessageByMessageId(messageId) == null) {
+            return null;
+        } else {
+            messageRepository.deleteById(messageId);
+            return 1;
+        }
+    }
+
 }

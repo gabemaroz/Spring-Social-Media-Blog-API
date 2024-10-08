@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.example.entity.Message;
 
-public interface MessageRepository extends JpaRepository<Message, Long> {
+public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     Optional<Message> findByMessageId(Integer messageId);
 

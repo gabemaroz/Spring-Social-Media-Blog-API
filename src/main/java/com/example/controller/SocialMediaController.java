@@ -68,22 +68,22 @@ public class SocialMediaController {
     }
 
     @GetMapping("messages/{messageId}")
-    public ResponseEntity<Message> retrieveMessageById(@PathVariable int messageId) {
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable Integer messageId) {
         return ResponseEntity.status(HttpStatus.OK).body(messageService.getMessageByMessageId(messageId));
     }
 
     @DeleteMapping("messages/{messageId}")
-    public ResponseEntity deleteMessageById(@PathVariable long messageId) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer messageId) {
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.removeMessageByMessageId(messageId));
     }
 
     @PatchMapping("messages/{messageId}")
-    public ResponseEntity replaceMessageById(@PathVariable long messageId) {
+    public ResponseEntity replaceMessageById(@PathVariable Integer messageId) {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @GetMapping("accounts/{accountId}")
-    public ResponseEntity<List<Message>> retrieveAllMessagesByAccount(@PathVariable long accountId) {
+    public ResponseEntity<List<Message>> retrieveAllMessagesByAccount(@PathVariable Integer accountId) {
         List <Message> messages = null;
         return ResponseEntity.status(HttpStatus.OK).body(messages);
     }
