@@ -31,7 +31,7 @@ public class SocialMediaController {
     }
 
     @PostMapping("register")
-    public ResponseEntity registerAccount(@RequestBody Account account) {
+    public ResponseEntity<Account> registerAccount(@RequestBody Account account) {
         try {
             Account createdAccount = accountService.createAccount(account);
             return ResponseEntity.status(HttpStatus.OK).body(createdAccount);
@@ -40,12 +40,16 @@ public class SocialMediaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        
     }
 
     @PostMapping("login")
-    public ResponseEntity loginAccount(@RequestBody Account account) {
-        return ResponseEntity.status(HttpStatus.OK).body(account);
+    public ResponseEntity<Account> loginAccount(@RequestBody Account account) {
+        try {
+            Account authorizedAccount = accountService.loginAccount(account);
+            return ResponseEntity.status(HttpStatus.OK).body(authorizedAccount);
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     } 
 
     @PostMapping("messages")

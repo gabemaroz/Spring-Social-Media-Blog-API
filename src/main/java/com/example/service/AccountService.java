@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import com.example.repository.AccountRepository;
 import com.example.entity.Account;
-import com.example.exception.DuplicateUsernameException;
+import com.example.exception.*;
 
 @Service
 public class AccountService {
@@ -27,7 +27,14 @@ public class AccountService {
             throw new DuplicateUsernameException("Username already exists.");
         }
         return accountRepository.save(account);
-        
+    }
+
+    public Account loginAccount(Account account) throws UnauthorizedException {
+        Optional<Account> optionalAccount = accountRepository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
+        if (optionalAccount.isEmpty()) {
+            throw new UnauthorizedException("Account is not authorized.");
+        }
+        return optionalAccount.get();
     }
 
 
