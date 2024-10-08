@@ -2,7 +2,11 @@ package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+
 import com.example.repository.AccountRepository;
+import com.example.entity.Account;
+import com.example.exception.DuplicateUsernameException;
 
 @Service
 public class AccountService {
@@ -14,6 +18,17 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public Account createAccount(Account account) throws DuplicateUsernameException, Exception {
+        if (account.getUsername().length() < 1 || account.getPassword().length() < 4) {
+            throw new Exception("Username or password issue.");
+        }
+        Optional<Account> optionalAccount = accountRepository.findByUsername(account.getUsername());
+        if (optionalAccount.isPresent()) {
+            throw new DuplicateUsernameException("Username already exists.");
+        }
+        return accountRepository.save(account);
+        
+    }
 
 
 }

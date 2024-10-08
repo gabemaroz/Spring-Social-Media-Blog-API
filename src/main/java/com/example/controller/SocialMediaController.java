@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.service.*;
 import com.example.entity.*;
+import com.example.exception.*;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -31,7 +32,15 @@ public class SocialMediaController {
 
     @PostMapping("register")
     public ResponseEntity registerAccount(@RequestBody Account account) {
-        return ResponseEntity.status(HttpStatus.OK).body(account);
+        try {
+            Account createdAccount = accountService.createAccount(account);
+            return ResponseEntity.status(HttpStatus.OK).body(createdAccount);
+        } catch (DuplicateUsernameException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
     }
 
     @PostMapping("login")
@@ -51,23 +60,23 @@ public class SocialMediaController {
     }
 
     @GetMapping("messages/{messageId}")
-    public ResponseEntity retrieveMessageById(@PathVariable String messageId) {
+    public ResponseEntity retrieveMessageById(@PathVariable long messageId) {
         Message message = null;
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
     @DeleteMapping("messages/{messageId}")
-    public ResponseEntity deleteMessageById(@PathVariable String messageId) {
+    public ResponseEntity deleteMessageById(@PathVariable long messageId) {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PatchMapping("messages/{messageId}")
-    public ResponseEntity replaceMessageById(@PathVariable String messageId) {
+    public ResponseEntity replaceMessageById(@PathVariable long messageId) {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @GetMapping("accounts/{accountId}")
-    public ResponseEntity retrieveAllMessagesByAccount(@PathVariable String accountId) {
+    public ResponseEntity retrieveAllMessagesByAccount(@PathVariable long accountId) {
         List <Message> messages = null;
         return ResponseEntity.status(HttpStatus.OK).body(messages);
     }
