@@ -64,14 +64,12 @@ public class SocialMediaController {
 
     @GetMapping("messages")
     public ResponseEntity<List<Message>> retrieveAllMessages() {
-        List <Message> messages = null;
-        return ResponseEntity.status(HttpStatus.OK).body(messages);
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.getAllMessages());
     }
 
     @GetMapping("messages/{messageId}")
-    public ResponseEntity<Message> retrieveMessageById(@PathVariable long messageId) {
-        Message message = null;
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable int messageId) {
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.getMessageByMessageId(messageId));
     }
 
     @DeleteMapping("messages/{messageId}")

@@ -3,6 +3,7 @@ package com.example.service;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import java.util.Optional;
+import java.util.List;
 
 import com.example.repository.*;
 import com.example.entity.*;
@@ -22,6 +23,15 @@ public class MessageService {
         } else {
             throw new MessageException("Message corrupt, incomplete, or unauthorized.");
         }
+    }
+
+    public List <Message> getAllMessages() {
+        return messageRepository.findAll();
+    }
+
+    public Message getMessageByMessageId(Integer messageId) {
+        Optional<Message> optionalMessage = messageRepository.findByMessageId(messageId);
+        return optionalMessage.isPresent() ? optionalMessage.get() : null;
     }
 
 }
