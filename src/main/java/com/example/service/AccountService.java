@@ -1,22 +1,18 @@
 package com.example.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 import com.example.repository.AccountRepository;
 import com.example.entity.Account;
 import com.example.exception.*;
 
 @Service
+@AllArgsConstructor
 public class AccountService {
 
     private AccountRepository accountRepository;
-
-    @Autowired
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
     public Account createAccount(Account account) throws DuplicateUsernameException, Exception {
         if (account.getUsername().length() < 1 || account.getPassword().length() < 4) {

@@ -1,17 +1,27 @@
 package com.example.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.repository.MessageRepository;
+import lombok.AllArgsConstructor;
+import java.util.Optional;
+
+import com.example.repository.*;
+import com.example.entity.*;
+import com.example.exception.*;
 
 @Service
+@AllArgsConstructor
 public class MessageService {
 
     private MessageRepository messageRepository;
+    private AccountRepository accountRepository;
 
-    @Autowired
-    public MessageService(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public Message createMessage(Message message) throws MessageException {
+        Optional<Account> optionalAccount = accountRepository.findByAccountId(message.getPostedBy());
+        if (optionalAccount.isPresent() && message.getMessageText().length() > 0 && message.getMessageText().length() < 255) {
+            return messageRepository.save(message);
+        } else {
+            throw new MessageException("Message corrupt, incomplete, or unauthorized.");
+        }
     }
 
 }

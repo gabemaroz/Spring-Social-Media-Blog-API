@@ -53,18 +53,23 @@ public class SocialMediaController {
     } 
 
     @PostMapping("messages")
-    public ResponseEntity createMessage(@RequestBody Message message) {
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
+        try {
+            Message validMessage = messageService.createMessage(message);
+            return ResponseEntity.status(HttpStatus.OK).body(validMessage);
+        } catch (MessageException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("messages")
-    public ResponseEntity retrieveAllMessages() {
+    public ResponseEntity<List<Message>> retrieveAllMessages() {
         List <Message> messages = null;
         return ResponseEntity.status(HttpStatus.OK).body(messages);
     }
 
     @GetMapping("messages/{messageId}")
-    public ResponseEntity retrieveMessageById(@PathVariable long messageId) {
+    public ResponseEntity<Message> retrieveMessageById(@PathVariable long messageId) {
         Message message = null;
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
@@ -80,7 +85,7 @@ public class SocialMediaController {
     }
 
     @GetMapping("accounts/{accountId}")
-    public ResponseEntity retrieveAllMessagesByAccount(@PathVariable long accountId) {
+    public ResponseEntity<List<Message>> retrieveAllMessagesByAccount(@PathVariable long accountId) {
         List <Message> messages = null;
         return ResponseEntity.status(HttpStatus.OK).body(messages);
     }
