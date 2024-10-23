@@ -6,11 +6,11 @@ This project is a backend API for a hypothetical social media app built using th
 
 ## Technologies Used
 
-* Java - version 17  
-* Spring Boot - version 3.1.0  
-* Spring Data JPA - version 3.1.0  
-* H2 Database - version 2.1.214  
-* Maven - version 4.0.0  
+* Java
+* Spring Boot
+* Spring Data JPA
+* H2 Database
+* Maven
 * Postman (for API testing) - optional
 
 ## Features
